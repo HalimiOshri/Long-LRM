@@ -63,7 +63,7 @@ training:
   gaussian_depth_loss: 0.01
 
   # logging
-  print_every: 20
+  print_every: 1 # debugging # 20
   wandb_every: 50
   checkpoint_every: 500
   vis_every: 250

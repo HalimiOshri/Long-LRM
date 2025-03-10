@@ -363,19 +363,19 @@ while train_steps_done <= train_steps:
             loss_str += f", gaussian_usage: {gaussian_usage:.4f}"
             memory_usage = torch.cuda.max_memory_allocated() / 1024.0 / 1024.0
             logger.info(f"\nStep {param_update_steps_done} / {train_steps // grad_accum_steps}, Epoch {cur_epoch}\n{loss_str}\nfwd_time: {fwd_time_str}, bwd_time: {bwd_time_str}, optim_time: {optim_time_str}, memory: {memory_usage:.2f} MB")
-        if param_update_steps_done % config.training.wandb_every == 0 or param_update_steps_done < param_update_steps_start + 100:
-            log_dict = {
-                "iter": param_update_steps_done,
-                "param_update_steps": param_update_steps_done,
-                "train_steps": train_steps_done,
-                "lr": optimizer.param_groups[0]["lr"],
-                "iter_time": time.time() - start_time,
-                "grad_norm": total_grad_norm,
-                "epoch": cur_epoch,
-                "train/gaussian_usage": gaussian_usage,
-            }
-            log_dict.update({"train/" + k: v for k, v in loss_dict.items()})
-            wandb.log(log_dict, step = param_update_steps_done)
+        # if param_update_steps_done % config.training.wandb_every == 0 or param_update_steps_done < param_update_steps_start + 100:
+        #     log_dict = {
+        #         "iter": param_update_steps_done,
+        #         "param_update_steps": param_update_steps_done,
+        #         "train_steps": train_steps_done,
+        #         "lr": optimizer.param_groups[0]["lr"],
+        #         "iter_time": time.time() - start_time,
+        #         "grad_norm": total_grad_norm,
+        #         "epoch": cur_epoch,
+        #         "train/gaussian_usage": gaussian_usage,
+        #     }
+        #     log_dict.update({"train/" + k: v for k, v in loss_dict.items()})
+        #     wandb.log(log_dict, step = param_update_steps_done)
         if param_update_steps_done % config.training.checkpoint_every == 0 or train_steps_done == train_steps:
             checkpoint = {
                 'model': model.module.state_dict(),
