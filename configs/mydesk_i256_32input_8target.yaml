@@ -27,6 +27,6 @@ data_eval:
   reverse_input_prob: 0.0
 
 training:
-  train_steps: 100000
+  train_steps: 100 # debugging 100000
   batch_size_per_gpu: 1
   grad_accum_steps: 4

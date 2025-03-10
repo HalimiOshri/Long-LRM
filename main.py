@@ -159,41 +159,41 @@ else:
         except:
             logger.warning(f"Failed to load optimizer and scheduler, start with new optimizer and scheduler")
 
-# wandb setup
-if rank == 0  and not config.get("evaluation", False):
-    api_key_path = config.get("api_key_path", None)
-    if api_key_path is None or (not os.path.exists(api_key_path)):
-        logger.error(f"API key file does not exist: {api_key_path}")
-        raise FileNotFoundError(f"API key file does not exist: {api_key_path}")
-    api_keys = edict(yaml.safe_load(open(api_key_path, 'r')))
-    wandb_api_key = api_keys.wandb
-    os.environ["WANDB_API_KEY"] = api_keys.wandb
-    if config.training.wandb_offline:
-        os.environ["WANDB_MODE"] = "offline"
-    wandb.login()
-    if train_steps_done > 0:
-        try:
-            id_file = open(os.path.join(checkpoint_dir, "wandb_id.txt"), "r")
-            wandb_id = id_file.read().strip()
-        except:
-            wandb_id = wandb.util.generate_id()
-            with open(os.path.join(checkpoint_dir, "wandb_id.txt"), "w") as f:
-                f.write(wandb_id)
-    else:
-        wandb_id = wandb.util.generate_id()
-        with open(os.path.join(checkpoint_dir, "wandb_id.txt"), "w") as f:
-            f.write(wandb_id)
-    wandb_dir_path = "/home/user/wandb"
-    os.makedirs(wandb_dir_path, exist_ok=True)
-    wandb.init(entity=config.training.wandb_entity,
-               project=config.training.wandb_project,
-               name=config_name,
-               id=wandb_id,
-               dir=wandb_dir_path,
-               config=copy.deepcopy(config),
-               resume="allow")
-    wandb.run.log_code(".")
-    logger.info(f"Initialized wandb")
+# # wandb setup
+# if rank == 0  and not config.get("evaluation", False):
+#     api_key_path = config.get("api_key_path", None)
+#     if api_key_path is None or (not os.path.exists(api_key_path)):
+#         logger.error(f"API key file does not exist: {api_key_path}")
+#         raise FileNotFoundError(f"API key file does not exist: {api_key_path}")
+#     api_keys = edict(yaml.safe_load(open(api_key_path, 'r')))
+#     wandb_api_key = api_keys.wandb
+#     os.environ["WANDB_API_KEY"] = api_keys.wandb
+#     if config.training.wandb_offline:
+#         os.environ["WANDB_MODE"] = "offline"
+#     wandb.login()
+#     if train_steps_done > 0:
+#         try:
+#             id_file = open(os.path.join(checkpoint_dir, "wandb_id.txt"), "r")
+#             wandb_id = id_file.read().strip()
+#         except:
+#             wandb_id = wandb.util.generate_id()
+#             with open(os.path.join(checkpoint_dir, "wandb_id.txt"), "w") as f:
+#                 f.write(wandb_id)
+#     else:
+#         wandb_id = wandb.util.generate_id()
+#         with open(os.path.join(checkpoint_dir, "wandb_id.txt"), "w") as f:
+#             f.write(wandb_id)
+#     wandb_dir_path = "/home/user/wandb"
+#     os.makedirs(wandb_dir_path, exist_ok=True)
+#     wandb.init(entity=config.training.wandb_entity,
+#                project=config.training.wandb_project,
+#                name=config_name,
+#                id=wandb_id,
+#                dir=wandb_dir_path,
+#                config=copy.deepcopy(config),
+#                resume="allow")
+#     wandb.run.log_code(".")
+#     logger.info(f"Initialized wandb")
 
 # evaluation
 if config.get("evaluation", False):
