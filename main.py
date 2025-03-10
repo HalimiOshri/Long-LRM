@@ -259,10 +259,12 @@ if config.get("evaluation", False):
 
 # training
 torch.distributed.barrier()
-if rank == 0 and config.training.get("perceptual_loss", 0.0) > 0:
-    from torchvision.models import vgg19
-    vgg = vgg19(weights='DEFAULT') # download vgg model
-    del vgg
+# OH: we read the weights from the disk
+# if rank == 0 and config.training.get("perceptual_loss", 0.0) > 0:
+#
+#     from torchvision.models import vgg19
+#     vgg = vgg19(weights='DEFAULT') # download vgg model
+#     del vgg
 torch.distributed.barrier()
 model.train()
 len_dataset = len(dataset) // batch_size_per_gpu * batch_size_per_gpu

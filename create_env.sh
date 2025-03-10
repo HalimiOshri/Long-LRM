@@ -8,4 +8,8 @@ pip install xformers==0.0.23.post1
 pip install videoio==0.3.0 ffmpeg-python==0.2.0
 pip install causal-conv1d==1.4.0
 pip install mamba-ssm==2.2.2
-pip install gsplat # pip install git+https://github.com/nerfstudio-project/gsplat
+
+# pip install gsplat # pip install git+https://github.com/nerfstudio-project/gsplat
+# Do this ==> https://docs.gsplat.studio/whl/gsplat/ torch = '2.1.2+cu121'
+pip install ninja numpy jaxtyping rich
+pip install gsplat-1.4.0+pt21cu121-cp310-cp310-linux_x86_64.whl
